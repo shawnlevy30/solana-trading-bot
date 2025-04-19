@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - Solana Memecoin Trading Bot</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">
+                    <img src="{{ url_for('static', filename='logo.svg') }}" alt="Logo">
+                    <h1>Solana Memecoin Trader</h1>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                    <li><a href="{{ url_for('signals') }}">Signals</a></li>
+                    <li><a href="{{ url_for('portfolio') }}">Portfolio</a></li>
+                    <li><a href="{{ url_for('tokens') }}">Tokens</a></li>
+                    <li><a href="{{ url_for('settings') }}" class="active">Settings</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="dashboard">
+        <div class="container">
+            <div class="dashboard-header">
+                <h2 class="dashboard-title">Settings</h2>
+            </div>
+
+            <div id="alertContainer"></div>
+
+            <form id="settingsForm">
+                <!-- Trading Settings -->
+                <div class="settings-section">
+                    <h3 class="settings-title">Trading Settings</h3>
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label class="form-label">Default Risk Level</label>
+                                <select class="form-control form-select">
+                                    <option value="low">Low Risk</option>
+                                    <option value="moderate" selected>Moderate Risk</option>
+                                    <option value="high">High Risk</option>
+                                </select>
+                                <small>Determines position sizing and trade parameters</small>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Portfolio Allocation Per Trade (%)</label>
+                                <input type="number" class="form-control" value="5" min="1" max="20">
+                                <small>Maximum percentage of portfolio to allocate to a single trade</small>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Default Stop Loss (%)</label>
+                                <input type="number" class="form-control" value="10" min="5" max="25">
+                                <small>Default stop loss percentage below entry price</small>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Default Take Profit (%)</label>
+                                <input type="number" class="form-control" value="20" min="10" max="50">
+                                <small>Default take profit percentage above entry price</small>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Preferred Trading Strategy</label>
+                                <select class="form-control form-select">
+                                    <option value="combined" selected>Combined (All Strategies)</option>
+                                    <option value="ml">ML-Based Strategy</option>
+                                    <option value="orderblock">Orderblock Strategy</option>
+                                    <option value="market_cap">Market Cap Tier Strategy</option>
+                                </select>
+                                <small>Strategy to use for generating trading signals</small>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Minimum Signal Confidence (%)</label>
+                                <input type="number" class="form-control" value="70" min="50" max="95">
+                                <small>Minimum confidence level required for trade signals</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Data Collection Settings -->
+                <div class="settings-section">
+                    <h3 class="settings-title">Data Collection Settings</h3>
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label class="form-label">Primary Data Source</label>
+                                <select class="form-control form-select">
+                                    <option value="dexscreener" selected>Dexscreener</option>
+                                    <option value="birdeye">Birdeye</option>
+                                    <option value="geckoterminal">GeckoTerminal</option>
+                                </select>
+                                <small>Primary source for price and market data</small>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Data Refresh Interval (minutes)</label>
+                                <input type="number" class="form-control" value="5" min="1" max="60">
+                                <small>How often to refresh market data</small>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Historical Data Depth (days)</label>
+                                <input type="number" class="form-control" value="30" min="7" max="90">
+                                <small>How many days of historical data to maintain</small>
+                            </div>
+                            <div class="form-group">
+                                <div class="checkbox-group">
+                                    <input type="checkbox" id="enableTimeframeAdaptability" checked>
+                                    <label for="enableTimeframeAdaptability">Enable Timeframe Adaptability</label>
+                                </div>
+                                <small>Automatically adjust timeframes based on coin age and market cap</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Security Settings -->
+                <div class="settings-section">
+                    <h3 class="settings-title">Security Settings</h3>
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <div class="checkbox-group">
+                                    <input type="checkbox" id="enableSecurityAudit" checked>
+                                    <label for="enableSecurityAudit">Enable Security Audit</label>
+                                </div>
+                                <small>Automatically perform security audit on tokens before trading</small>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Maximum Acceptable Risk Level</label>
+                                <select class="form-control form-select">
+                                    <option value="low">Low Risk Only</option>
+                                    <option value="moderate" selected>Up to Moderate Risk</option>
+                                    <option value="high">Up to High Risk</option>
+                                    <option value="very_high">Up to Very High Risk</option>
+                                </select>
+                                <small>Maximum security risk level acceptable for trading</small>
+                            </div>
+                            <div class="form-group">
+                                <div class="checkbox-group">
+                                    <input type="checkbox" id="blockPumpFun" checked>
+                                    <label for="blockPumpFun">Block Pump.fun Tokens</label>
+                                </div>
+                                <small>Automatically block tokens from the Pump.fun platform</small>
+                            </div>
+                            <div class="form-group">
+                                <div class="checkbox-group">
+                                    <input type="checkbox" id="blockNewTokens" checked>
+                                    <label for="blockNewTokens">Block Tokens Newer Than 2 Hours</label>
+                                </div>
+                                <small>Avoid trading extremely new tokens</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notification Settings -->
+                <div class="settings-section">
+                    <h3 class="settings-title">Notification Settings</h3>
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <div class="checkbox-group">
+                                    <input type="checkbox" id="enableEmailNotifications" checked>
+                                    <label for="enableEmailNotifications">Email Notifications</label>
+                                </div>
+                                <small>Receive email notifications for important events</small>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Email Address</label>
+                                <input type="email" class="form-control" value="user@example.com">
+                            </div>
+                            <div class="form-group">
+                                <div class="checkbox-group">
+                                    <input type="checkbox" id="notifyNewSignals" checked>
+                                    <label for="notifyNewSignals">New Trading Signals</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="checkbox-group">
+                                    <input type="checkbox" id="notifyTradeExecution" checked>
+                                    <label for="notifyTradeExecution">Trade Execution</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="checkbox-group">
+                                    <input type="checkbox" id="notifyStopLoss" checked>
+                                    <label for="notifyStopLoss">Stop Loss Triggered</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="checkbox-group">
+                                    <input type="checkbox" id="notifyTakeProfit" checked>
+                                    <label for="notifyTakeProfit">Take Profit Triggered</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Save Settings</button>
+                    <button type="reset" class="btn btn-outline">Reset to Defaults</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

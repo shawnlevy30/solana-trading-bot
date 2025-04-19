@@ -1,0 +1,36 @@
+# API and Data Collection
+requests>=2.28.0
+websocket-client>=1.5.0
+pandas>=1.5.0
+numpy>=1.22.0
+python-dotenv>=0.20.0
+
+# Machine Learning
+scikit-learn>=1.0.0
+tensorflow>=2.10.0
+xgboost>=1.6.0
+lightgbm>=3.3.0
+statsmodels>=0.13.0
+
+# Trading and Blockchain
+solana>=0.29.0
+web3>=6.0.0
+
+# Data Storage
+pymongo>=4.0.0
+redis>=4.3.0
+
+# Visualization and UI
+dash>=2.0.0
+plotly>=5.10.0
+flask<2.3.0
+flask-login>=0.6.0
+
+# Security
+cryptography>=40.0.0
+pyjwt>=2.6.0
+
+# Utilities
+tqdm>=4.64.0
+loguru>=0.6.0
+pytest>=7.0.0

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solana Memecoin Trading Bot</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">
+                    <img src="{{ url_for('static', filename='logo.svg') }}" alt="Logo">
+                    <h1>Solana Memecoin Trader</h1>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="{{ url_for('dashboard') }}" class="active">Dashboard</a></li>
+                    <li><a href="{{ url_for('signals') }}">Signals</a></li>
+                    <li><a href="{{ url_for('portfolio') }}">Portfolio</a></li>
+                    <li><a href="{{ url_for('tokens') }}">Tokens</a></li>
+                    <li><a href="{{ url_for('settings') }}">Settings</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="dashboard">
+        <div class="container">
+            <div class="dashboard-header">
+                <h2 class="dashboard-title">Dashboard</h2>
+                <div class="dashboard-actions">
+                    <button id="refreshData" class="btn btn-outline">
+                        <span class="btn-icon">↻</span> Refresh Data
+                    </button>
+                    <button class="btn btn-primary">
+                        <span class="btn-icon">+</span> New Trade
+                    </button>
+                </div>
+            </div>
+
+            <!-- Portfolio Summary -->
+            <div class="grid">
+                <div class="card grid-col-2">
+                    <div class="card-header">
+                        <h3 class="card-title">Portfolio Value</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="portfolio-summary">
+                            <div>
+                                <div id="portfolioValue" class="portfolio-value">$12,458.32</div>
+                                <div id="portfolioChange" class="portfolio-change positive">+5.2%</div>
+                            </div>
+                            <div class="dashboard-actions">
+                                <button class="btn btn-outline btn-sm">Deposit</button>
+                                <button class="btn btn-outline btn-sm">Withdraw</button>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="portfolioChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Performance</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-container">
+                            <canvas id="performanceChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Trading Signals -->
+            <h3>Latest Trading Signals</h3>
+            <div class="loading-indicator spinner" style="display: none;"></div>
+            <div class="grid" id="tradingSignals">
+                <!-- Trading signals will be loaded here -->
+            </div>
+
+            <!-- Active Trades -->
+            <h3>Active Trades</h3>
+            <div class="loading-indicator spinner" style="display: none;"></div>
+            <div class="table-container">
+                <table id="activeTradesTable">
+                    <thead>
+                        <tr>
+                            <th>Token</th>
+                            <th>Entry Price</th>
+                            <th>Current Price</th>
+                            <th>Change</th>
+                            <th>Amount</th>
+                            <th>Value</th>
+                            <th>Stop Loss</th>
+                            <th>Take Profit</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Active trades will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

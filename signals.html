@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trading Signals - Solana Memecoin Trading Bot</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">
+                    <img src="{{ url_for('static', filename='logo.svg') }}" alt="Logo">
+                    <h1>Solana Memecoin Trader</h1>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                    <li><a href="{{ url_for('signals') }}" class="active">Signals</a></li>
+                    <li><a href="{{ url_for('portfolio') }}">Portfolio</a></li>
+                    <li><a href="{{ url_for('tokens') }}">Tokens</a></li>
+                    <li><a href="{{ url_for('settings') }}">Settings</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="dashboard">
+        <div class="container">
+            <div class="dashboard-header">
+                <h2 class="dashboard-title">Trading Signals</h2>
+                <div class="dashboard-actions">
+                    <button id="refreshData" class="btn btn-outline">
+                        <span class="btn-icon">↻</span> Refresh Data
+                    </button>
+                </div>
+            </div>
+
+            <!-- Signal Filters -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Signal Filters</h3>
+                </div>
+                <div class="card-body">
+                    <form id="signalFiltersForm" class="form-inline">
+                        <div class="form-group">
+                            <label class="form-label">Action</label>
+                            <select class="form-control form-select">
+                                <option value="all" selected>All Actions</option>
+                                <option value="buy">Buy</option>
+                                <option value="sell">Sell</option>
+                                <option value="hold">Hold</option>
+                                <option value="avoid">Avoid</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Min. Confidence</label>
+                            <select class="form-control form-select">
+                                <option value="0">Any</option>
+                                <option value="50">50%</option>
+                                <option value="70" selected>70%</option>
+                                <option value="90">90%</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Market Cap</label>
+                            <select class="form-control form-select">
+                                <option value="all" selected>All Tiers</option>
+                                <option value="micro">Micro Cap</option>
+                                <option value="small">Small Cap</option>
+                                <option value="medium">Medium Cap</option>
+                                <option value="large">Large Cap</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Risk Level</label>
+                            <select class="form-control form-select">
+                                <option value="all" selected>All Levels</option>
+                                <option value="low">Low Risk</option>
+                                <option value="moderate">Moderate Risk</option>
+                                <option value="high">High Risk</option>
+                                <option value="very_high">Very High Risk</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">Apply Filters</button>
+                            <button type="reset" class="btn btn-outline">Reset</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Trading Signals -->
+            <div class="loading-indicator spinner" style="display: none;"></div>
+            <div class="grid" id="tradingSignals">
+                <!-- Trading signals will be loaded here -->
+            </div>
+
+            <!-- Signal History -->
+            <h3>Signal History</h3>
+            <div class="table-container">
+                <table id="signalHistoryTable">
+                    <thead>
+                        <tr>
+                            <th>Date/Time</th>
+                            <th>Token</th>
+                            <th>Action</th>
+                            <th>Confidence</th>
+                            <th>Price at Signal</th>
+                            <th>Current Price</th>
+                            <th>Change</th>
+                            <th>Strategy</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Signal history will be loaded here -->
+                        <tr>
+                            <td>Apr 18, 2025 14:32</td>
+                            <td>
+                                <div class="token-card">
+                                    <div class="token-icon">B</div>
+                                    <div class="token-info">
+                                        <div class="token-name">Bonk</div>
+                                        <div class="token-symbol">BONK</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><span class="badge badge-success">BUY</span></td>
+                            <td>85%</td>
+                            <td>$0.00000215</td>
+                            <td>$0.00000235</td>
+                            <td class="positive">+9.3%</td>
+                            <td>ML-Based</td>
+                            <td>
+                                <button class="btn btn-sm btn-outline trade-btn" data-action="VIEW" data-token="BONK" data-name="Bonk">Details</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Apr 18, 2025 10:15</td>
+                            <td>
+                                <div class="token-card">
+                                    <div class="token-icon">C</div>
+                                    <div class="token-info">
+                                        <div class="token-name">Cato</div>
+                                        <div class="token-symbol">CATO</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><span class="badge badge-danger">SELL</span></td>
+                            <td>78%</td>
+                            <td>$0.00000820</td>
+                            <td>$0.00000789</td>
+                            <td class="negative">-3.8%</td>
+                            <td>Orderblock</td>
+                            <td>
+                                <button class="btn btn-sm btn-outline trade-btn" data-action="VIEW" data-token="CATO" data-name="Cato">Details</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Apr 17, 2025 16:45</td>
+                            <td>
+                                <div class="token-card">
+                                    <div class="token-icon">S</div>
+                                    <div class="token-info">
+                                        <div class="token-name">Samoyedcoin</div>
+                                        <div class="token-symbol">SAMO</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><span class="badge badge-warning">HOLD</span></td>
+                            <td>72%</td>
+                            <td>$0.00510</td>
+                            <td>$0.00521</td>
+                            <td class="positive">+2.1%</td>
+                            <td>Market Cap Tier</td>
+                            <td>
+                                <button class="btn btn-sm btn-outline trade-btn" data-action="VIEW" data-token="SAMO" data-name="Samoyedcoin">Details</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination">
+                <button class="btn btn-sm btn-outline">Previous</button>
+                <span class="pagination-info">Page 1 of 3</span>
+                <button class="btn btn-sm btn-outline">Next</button>
+            </div>
+        </div>
+    </main>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

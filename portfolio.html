@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio - Solana Memecoin Trading Bot</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">
+                    <img src="{{ url_for('static', filename='logo.svg') }}" alt="Logo">
+                    <h1>Solana Memecoin Trader</h1>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                    <li><a href="{{ url_for('signals') }}">Signals</a></li>
+                    <li><a href="{{ url_for('portfolio') }}" class="active">Portfolio</a></li>
+                    <li><a href="{{ url_for('tokens') }}">Tokens</a></li>
+                    <li><a href="{{ url_for('settings') }}">Settings</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="dashboard">
+        <div class="container">
+            <div class="dashboard-header">
+                <h2 class="dashboard-title">Portfolio</h2>
+                <div class="dashboard-actions">
+                    <button id="refreshData" class="btn btn-outline">
+                        <span class="btn-icon">↻</span> Refresh Data
+                    </button>
+                    <button class="btn btn-primary">
+                        <span class="btn-icon">+</span> Add Funds
+                    </button>
+                </div>
+            </div>
+
+            <!-- Portfolio Summary -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Portfolio Summary</h3>
+                </div>
+                <div class="card-body">
+                    <div class="portfolio-summary">
+                        <div>
+                            <div id="portfolioValue" class="portfolio-value">$12,458.32</div>
+                            <div id="portfolioChange" class="portfolio-change positive">+5.2% (24h)</div>
+                        </div>
+                        <div class="dashboard-actions">
+                            <button class="btn btn-outline btn-sm">Deposit</button>
+                            <button class="btn btn-outline btn-sm">Withdraw</button>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="portfolioChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Portfolio Stats -->
+            <div class="grid">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Active Positions</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="stat-card">
+                            <div class="stat-value">2</div>
+                            <div class="stat-label">Active Positions</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Unrealized P&L</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="stat-card">
+                            <div class="stat-value positive">+$325.75</div>
+                            <div class="stat-label">Unrealized Profit/Loss</div>
+                            <div class="stat-change positive">+8.2%</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Realized P&L</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="stat-card">
+                            <div class="stat-value positive">+$1,245.50</div>
+                            <div class="stat-label">Realized Profit/Loss (All Time)</div>
+                            <div class="stat-change positive">+12.5%</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Win Rate</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="stat-card">
+                            <div class="stat-value">68%</div>
+                            <div class="stat-label">Win Rate (All Time)</div>
+                            <div class="stat-change">15 wins / 7 losses</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active Positions -->
+            <h3>Active Positions</h3>
+            <div class="loading-indicator spinner" style="display: none;"></div>
+            <div class="table-container">
+                <table id="activePositionsTable">
+                    <thead>
+                        <tr>
+                            <th>Token</th>
+                            <th>Entry Date</th>
+                            <th>Entry Price</th>
+                            <th>Current Price</th>
+                            <th>Change</th>
+                            <th>Amount</th>
+                            <th>Value</th>
+                            <th>Stop Loss</th>
+                            <th>Take Profit</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Active positions will be loaded here -->
+                        <tr>
+                            <td>
+                                <div class="token-card">
+                                    <div class="token-icon">B</div>
+                                    <div class="token-info">
+                                        <div class="token-name">Bonk</div>
+                                        <div class="token-symbol">BONK</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>Apr 18, 2025</td>
+                            <td>$0.00000215</td>
+                            <td>$0.00000235</td>
+                            <td class="positive">+9.3%</td>
+                            <td>1,250,000,000</td>
+                            <td>$2,937.50</td>
+                            <td>$0.00000195</td>
+                            <td>$0.00000300</td>
+                            <td>
+                                <button class="btn btn-sm btn-accent trade-btn" data-action="SELL" data-token="BONK" data-name="Bonk">Close</button>
+                                <button class="btn btn-sm btn-outline trade-btn" data-action="EDIT" data-token="BONK" data-name="Bonk">Edit</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="token-card">
+                                    <div class="token-icon">W</div>
+                                    <div class="token-info">
+                                        <div class="token-name">Dogwifhat</div>
+                                        <div class="token-symbol">WIF</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>Apr 17, 2025</td>
+                            <td>$0.00000952</td>
+                            <td>$0.00000921</td>
+                            <td class="negative">-3.3%</td>
+                            <td>150,000</td>
+                            <td>$1,381.50</td>
+                            <td>$0.00000850</td>
+                            <td>$0.00001200</td>
+                            <td>
+                                <button class="btn btn-sm btn-accent trade-btn" data-action="SELL" data-token="WIF" data-name="Dogwifhat">Close</button>
+                                <button class="btn btn-sm btn-outline trade-btn" data-action="EDIT" data-token="WIF" data-name="Dogwifhat">Edit</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Trade History -->
+            <h3>Trade History</h3>
+            <div class="table-container">
+                <table id="tradeHistoryTable">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Token</th>
+                            <th>Action</th>
+                            <th>Price</th>
+                            <th>Amount</th>
+                            <th>Value</th>
+                            <th>P&L</th>
+                            <th>Strategy</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Trade history will be loaded here -->
+                        <tr>
+                            <td>Apr 16, 2025</td>
+                            <td>
+                                <div class="token-card">
+                                    <div class="token-icon">C</div>
+                                    <div class="token-info">
+                                        <div class="token-name">Cato</div>
+                                        <div class="token-symbol">CATO</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><span class="badge badge-success">BUY</span></td>
+                            <td>$0.00000820</td>
+                            <td>500,000</td>
+                            <td>$410.00</td>
+                            <td>-</td>
+                            <td>ML-Based</td>
+                        </tr>
+                        <tr>
+                            <td>Apr 18, 2025</td>
+                            <td>
+                                <div class="token-card">
+                                    <div class="token-icon">C</div>
+                                    <div class="token-info">
+                                        <div class="token-name">Cato</div>
+                                        <div class="token-symbol">CATO</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><span class="badge badge-danger">SELL</span></td>
+                            <td>$0.00000789</td>
+                            <td>500,000</td>
+                            <td>$394.50</td>
+                            <td class="negative">-$15.50 (-3.8%)</td>
+                            <td>Orderblock</td>
+                        </tr>
+                        <tr>
+                            <td>Apr 10, 2025</td>
+                            <td>
+                                <div class="token-card">
+                                    <div class="token-icon">P</div>
+                                    <div class="token-info">
+                                        <div class="token-name">Popcat</div>
+                                        <div class="token-symbol">POPCAT</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><span class="badge badge-success">BUY</span></td>
+                            <td>$0.00000085</td>
+                            <td>2,000,000</td>
+                            <td>$170.00</td>
+                            <td>-</td>
+                            <td>Market Cap Tier</td>
+                        </tr>
+                        <tr>
+                            <td>Apr 15, 2025</td>
+                            <td>
+                                <div class="token-card">
+                                    <div class="token-icon">P</div>
+                                    <div class="token-info">
+                                        <div class="token-name">Popcat</div>
+                                        <div class="token-symbol">POPCAT</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><span class="badge badge-danger">SELL</span></td>
+                            <td>$0.00000123</td>
+                            <td>2,000,000</td>
+                            <td>$246.00</td>
+                            <td class="positive">+$76.00 (+44.7%)</td>
+                            <td>ML-Based</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination">
+                <button class="btn btn-sm btn-outline">Previous</button>
+                <span class="pagination-info">Page 1 of 2</span>
+                <button class="btn btn-sm btn-outline">Next</button>
+            </div>
+        </div>
+    </main>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

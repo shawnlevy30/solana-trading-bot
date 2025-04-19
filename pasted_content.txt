@@ -1,0 +1,42 @@
+Now go build something that lasts - whether that's a trading strategy, a community contribution, or simply a portfolio that survives to see the next cycle. In a market defined by impermanence, creating something sustainable might be the greatest achievement of all.
+ 
+**Ultimate Manus AI Prompt for Solana Memecoin Trading Bot Development:**
+
+**Task Overview:**  
+You will build a fully autonomous trading bot tailored explicitly for volatile, short-lived memecoins on the Solana blockchain. The bot must incorporate real-time market data, machine learning-driven predictive analytics, and provide a minimal, clear interface for monitoring and manual intervention.
+
+**Objectives:**
+1. **Data Collection & Preprocessing:**
+   - Pull historical and real-time on-chain data (price, volume, liquidity, FDV, number of transactions) from APIs such as Dexscreener, Birdeye, or GeckoTerminal.
+   - Track and tag the wallet addresses of specified Key Opinion Leaders (KOLs) , clearly label their buy/sell transactions to isolate their market impact and reduce data bias.
+   - Automatically clean the data, correcting anomalies, handling missing values, and generating standard memecoin-specific indicators (e.g., short-term volume spikes, liquidity pulls, volatility bursts).
+
+2. **Advanced Machine Learning Model:**
+   - Train predictive models (Random Forest, Gradient Boosting, or LSTM neural networks) optimized for rapid price prediction and anomaly detection in ultra-short-term timeframes (minutes or even seconds).
+   - Include KOL wallets' transaction timing and patterns as predictive features to model the potential market impact of their future activities.
+   - Implement robust backtesting routines to verify predictive accuracy, focusing explicitly on periods surrounding large KOL-driven price moves and sniper bot activities.
+
+3. **Trading Strategy & Execution:**
+   - Develop logic that executes trades based on ML model predictions, explicitly considering risk management protocols (stop-loss, take-profit).
+   - Integrate dynamic order sizing based on liquidity and volume data, ensuring trades minimize market impact and slippage.
+   - Automatically pause trading during detected sniper bot attacks or massive KOL-driven volatility spikes until stable market conditions resume.
+
+4. **User Interface & Visualization:**
+   - Create a streamlined web dashboard to display real-time analytics: current holdings, trade history, bot performance metrics (ROI, win-rate, drawdown), ML prediction confidence, and clearly labeled KOL and sniper bot transactions.
+   - Enable manual override controls (start/stop bot, modify risk parameters) accessible via a secure login.
+
+5. **Deployment & Security:**
+   - Securely integrate with Solana-compatible exchanges (Raydium, Jupiter Aggregator, or similar) using provided API credentials, ensuring adherence to industry-standard security best practices.
+   - Host the bot and its UI dashboard in a secure, scalable cloud environment for continuous and uninterrupted operation.
+
+**Considerations & Constraints:**
+- The model should explicitly factor the outsized influence of KOLs, recognizing their capability to distort short-term market dynamics IN LOW MARKET CAP COINS.
+- Identify and flag patterns that indicate sniper bot manipulation or artificial price pumping.
+- Maintain compliance with API rate limits, implementing efficient data-caching strategies to minimize downtime.
+
+**Deliverables:**
+- Complete source code for all bot components.
+- A detailed technical report explaining the ML model choice, training process, evaluation metrics, and the logic behind the integration of KOL and sniper data.
+- A deployed and fully functional bot with live monitoring and intervention capabilities, accessible via a provided URL.
+
+Execute each component independently, verifying completion and effectiveness before moving on. Ensure detailed progress updates and prompt self-correction of issues to guarantee a fully optimized and immediately deployable solution.
